@@ -8,7 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProductGallery extends Model
 {
-    protected $guarded = [];
+    protected $fillable = [
+        'products_id',
+        'url',
+        'is_featured'
+    ];
     
 
    

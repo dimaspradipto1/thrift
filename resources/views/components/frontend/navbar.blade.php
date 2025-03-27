@@ -1,5 +1,9 @@
+@php
+    use Illuminate\Support\Facades\Route;
+@endphp
+
 <!-- START: HEADER -->
-    <header class="{{\Route::current()->getName() == 'index' ? 'absolute': ''}} w-full z-50 px-4">
+    <header class="{{Route::current()->getName() == 'index' ? 'absolute': ''}} w-full z-50 px-4">
       <div class="container mx-auto py-5">
         <div class="flex flex-stretch items-center">
           <div class="w-56 items-center flex">
@@ -17,22 +21,22 @@
               id="menu"
             >
               <li class="mx-3 py-6 md:py-0">
-                <a href="#" class="text-black {{\Route::current()->getName() == 'index' ? 'md:text-white': ''}} hover:underline"
+                <a href="#" class="text-black {{Route::current()->getName() == 'index' ? 'md:text-white': ''}} hover:underline"
                   >Showcase</a
                 >
               </li>
               <li class="mx-3 py-6 md:py-0">
-                <a href="#" class="text-black {{\Route::current()->getName() == 'index' ? 'md:text-white': ''}} hover:underline"
+                <a href="#" class="text-black {{Route::current()->getName() == 'index' ? 'md:text-white': ''}} hover:underline"
                   >Catalog</a
                 >
               </li>
               <li class="mx-3 py-6 md:py-0">
-                <a href="#" class="text-black {{\Route::current()->getName() == 'index' ? 'md:text-white': ''}} hover:underline"
+                <a href="#" class="text-black {{Route::current()->getName() == 'index' ? 'md:text-white': ''}} hover:underline"
                   >Delivery</a
                 >
               </li>
               <li class="mx-3 py-6 md:py-0">
-                <a href="#" class="text-black {{\Route::current()->getName() == 'index' ? 'md:text-white': ''}} hover:underline"
+                <a href="#" class="text-black {{Route::current()->getName() == 'index' ? 'md:text-white': ''}} hover:underline"
                   >Rewards</a
                 >
               </li>
@@ -43,7 +47,7 @@
               <li class="ml-6 block md:hidden">
                 <button
                   id="menu-toggler"
-                  class="relative flex z-50 items-center justify-center w-8 h-8 text-black {{\Route::current()->getName() == 'index' ? 'md:text-white': ''} focus:outline-none"
+                  class="relative flex z-50 items-center justify-center w-8 h-8 text-black {{Route::current()->getName() == 'index' ? 'md:text-white': ''} focus:outline-none"
                 >
                   <svg
                     class="fill-current"
@@ -66,7 +70,7 @@
               <li class="ml-6">
                 <a
                   id="header-cart"
-                  class="flex items-center justify-center w-8 h-8 text-black {{\Route::current()->getName() == 'index' ? 'md:text-white': ''}"
+                  class="flex items-center justify-center w-8 h-8 text-black {{Route::current()->getName() == 'index' ? 'md:text-white': ''}"
                   href="cart.html"
                 >
                   <svg

@@ -6,7 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class TransactionItem extends Model
 {
-    protected $guarded = [];
+    protected $fillable = [
+        'users_id',
+        'products_id',
+        'transactions_id',
+    ];
 
     public function product()
     {

@@ -8,8 +8,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
-    protected $unguarded = [];
     use HasFactory, SoftDeletes;
+    protected $fillable = [
+        'name',
+        'description', 
+        'price',
+        'slug',
+    ];
 
     public function galleries()
     {

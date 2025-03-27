@@ -123,4 +123,9 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'aliases' => [
+        // Alias lainnya...
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+    ],
+
 ];
