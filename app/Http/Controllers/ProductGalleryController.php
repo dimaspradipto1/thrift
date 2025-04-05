@@ -15,6 +15,7 @@ class ProductGalleryController extends Controller
      */
     public function index(ProductGalleryDataTable $dataTable, Product $product)
     {
+        $dataTable->product = $product;
         return $dataTable->render('pages.dashboard.gallery.index', compact('product'));
     }
 
