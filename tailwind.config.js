@@ -18,6 +18,14 @@ export default {
             },
         },
     },
+    safelist: [
+        'bg-red-500',
+        'bg-red-700',
+        'bg-yellow-500',
+        'bg-yellow-600',
+        'hover:bg-red-700',
+        'hover:bg-yellow-600'
+    ],
 
     plugins: [forms, typography],
 };

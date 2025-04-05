@@ -2,17 +2,18 @@
 
 namespace App\DataTables;
 
-use App\Models\Product;
-use Illuminate\Database\Eloquent\Builder as QueryBuilder;
-use Yajra\DataTables\EloquentDataTable;
-use Yajra\DataTables\Html\Builder as HtmlBuilder;
+use App\Models\ProductGallery;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
+use Illuminate\Support\Facades\Storage;
+use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
+use Yajra\DataTables\Html\Builder as HtmlBuilder;
+use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 
-class ProductDataTable extends DataTable
+class ProductGalleryDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -26,9 +27,7 @@ class ProductDataTable extends DataTable
             ->addColumn('action', function($item){
                 return '
                 <div class="flex gap-2">
-                     <a href="'.route('dashboard.product.gallery.index', $item->id).'" class="inline-block bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded shadow-lg">Gallery</a>
-                     <a href="'.route('dashboard.product.edit', $item->id).'" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded shadow-lg">Edit</a>
-                    <form class="inline-block" action="'.route('dashboard.product.destroy', $item->id).'" method="POST">
+                    <form class="inline-block" action="'.route('dashboard.gallery.destroy', $item->id).'" method="POST">
                         <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded shadow-lg">
                             Delete
                         </button>
@@ -37,20 +36,20 @@ class ProductDataTable extends DataTable
                     </div>
                 ';
             })
-            ->editColumn('description', function($item){
-                return strip_tags($item->description);
+            ->editColumn('url', function($item){
+                return '<img src="'.Storage::url($item->url).'" style="max-height: 100px;"/>';
             })
-            ->editColumn('price', function($item){
-                return number_format($item->price, 0, ',', '.');
+            ->editColumn('is_featured', function($item){
+                return $item->is_featured ? 'Yes' : 'No';
             })
-            ->rawColumns(['action', 'description', 'price'])
+            ->rawColumns(['action', 'url', 'is_featured'])
             ->setRowId('DT_RowIndex');
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(Product $model): QueryBuilder
+    public function query(ProductGallery $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -61,7 +60,7 @@ class ProductDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('product-table')
+                    ->setTableId('productgallery-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     ->orderBy(1)
@@ -83,15 +82,14 @@ class ProductDataTable extends DataTable
     {
         return [
             Column::make('DT_RowIndex')->title('No'),
-            Column::make('name')->title('Nama Produk'),
-            Column::make('price')->title('Harga Produk'),
-            Column::make('description')->title('Deskripsi'),
-            Column::computed('action')
-            ->title('Aksi')
-            ->exportable(false)
-            ->printable(false)
-            ->width(100)
-            ->addClass('text-center'),
+            Column::make('url')->title('Photo'),
+            Column::make('is_featured')->title('Featured'),
+            Column::make('action')
+                ->title('Aksi')
+                ->exportable(false)
+                ->printable(false)
+                ->width(100)
+                ->addClass('text-center'),
         ];
     }
 
@@ -100,6 +98,6 @@ class ProductDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Product_' . date('YmdHis');
+        return 'ProductGallery_' . date('YmdHis');
     }
 }

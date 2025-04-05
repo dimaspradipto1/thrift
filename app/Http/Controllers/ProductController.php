@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\ProductDataTable;
+use App\Models\Product;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\DataTables\ProductDataTable;
+use App\Http\Requests\ProductRequest;
 
 
 class ProductController extends Controller
@@ -22,15 +25,18 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.dashboard.product.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        //
+        $data = $request->all();
+        $data['slug'] = Str::slug($request->name);
+        Product::create($data);
+        return redirect()->route('dashboard.product.index');
     }
 
     /**
@@ -44,24 +50,28 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Product $product)
     {
-        //
+        return view('pages.dashboard.product.edit', compact('product'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ProductRequest $request, Product $product)
     {
-        //
+        $data = $request->all();
+        $data['slug'] = Str::slug($request->name);
+        $product->update($data);
+        return redirect()->route('dashboard.product.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Product $product)
     {
-        //
+        $product->delete();
+        return redirect()->route('dashboard.product.index');
     }
 }
