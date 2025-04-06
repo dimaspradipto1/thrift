@@ -76,9 +76,15 @@ class MyTransactionDataTable extends DataTable
             Column::make('DT_RowIndex')->title('No'),
             Column::make('name')->title('Nama'),
             Column::make('phone')->title('phone'),
-            Column::make('total_price')->title('total_price')->addClass('text-left'),
+            Column::make('courier')->title('courier'),
+            Column::make('total_price')->title('total_price'),
             Column::make('status')->title('status'),
-            
+            Column::computed('action')
+                ->title('Aksi')
+                ->exportable(false)
+                ->printable(false)
+                ->width(60)
+                ->addClass('text-center'),
         ];
     }
 
