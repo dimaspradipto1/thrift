@@ -31,6 +31,10 @@
                             {{ __('User') }}
                         </x-nav-link>
                     @endif
+
+                    <x-nav-link href="{{ route('dashboard.my-transaction.index') }}" :active="request()->routeIs('dashboard.my-transaction.index')">
+                        {{ __('My Transaction') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -170,6 +174,10 @@
                     {{ __('User') }}
                 </x-responsive-nav-link>
             @endif
+
+            <x-responsive-nav-link href="{{ route('dashboard.my-transaction.index') }}" :active="request()->routeIs('dashboard.my-transaction.index')">
+                {{ __('My Transaction') }}
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->

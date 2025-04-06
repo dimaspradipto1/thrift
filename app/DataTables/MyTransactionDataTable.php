@@ -3,16 +3,17 @@
 namespace App\DataTables;
 
 use App\Models\Transaction;
-use Illuminate\Database\Eloquent\Builder as QueryBuilder;
-use Yajra\DataTables\EloquentDataTable;
-use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
+use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
+use Yajra\DataTables\Html\Builder as HtmlBuilder;
+use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 
-class TransactionDataTable extends DataTable
+class MyTransactionDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -22,20 +23,19 @@ class TransactionDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-        ->addIndexColumn()
-        ->addColumn('action', function($item){
-            return '
-            <div class="flex gap-2">
-                 <a href="'.route('dashboard.transaction.show', $item->id).'" class="inline-block bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded shadow-lg">Show</a>
-                <a href="'.route('dashboard.transaction.edit', $item->id).'" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded shadow-lg">Edit</a>
-                </div>
-            ';
-        })
-        ->editColumn('total_price', function($item){
-            return number_format($item->total_price, 0, ',', '.');
-        })
-        ->rawColumns(['action', 'total_price'])
-        ->setRowId('DT_RowIndex');
+            ->addIndexColumn()
+            ->addColumn('action', function($item){
+                return '
+                <div class="flex gap-2">
+                    <a href="'.route('dashboard.my-transaction.show', $item->id).'" class="inline-block bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded shadow-lg">Show</a>
+                    </div>
+                ';
+            })
+            ->editColumn('total_price', function($item){
+                return number_format($item->total_price, 0, ',', '.');
+            })
+            ->rawColumns(['action', 'total_price'])
+            ->setRowId('DT_RowIndex');
     }
 
     /**
@@ -43,7 +43,7 @@ class TransactionDataTable extends DataTable
      */
     public function query(Transaction $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->with(['user'])->where('users_id', Auth::user()->id);
     }
 
     /**
@@ -52,7 +52,7 @@ class TransactionDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('transaction-table')
+                    ->setTableId('mytransaction-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     ->orderBy(1)
@@ -76,15 +76,9 @@ class TransactionDataTable extends DataTable
             Column::make('DT_RowIndex')->title('No'),
             Column::make('name')->title('Nama'),
             Column::make('phone')->title('phone'),
-            Column::make('courier')->title('courier'),
-            Column::make('total_price')->title('total_price'),
+            Column::make('total_price')->title('total_price')->addClass('text-left'),
             Column::make('status')->title('status'),
-            Column::computed('action')
-                ->title('Aksi')
-                ->exportable(false)
-                ->printable(false)
-                ->width(60)
-                ->addClass('text-center'),
+            
         ];
     }
 
@@ -93,6 +87,6 @@ class TransactionDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Transaction_' . date('YmdHis');
+        return 'MyTransaction_' . date('YmdHis');
     }
 }
